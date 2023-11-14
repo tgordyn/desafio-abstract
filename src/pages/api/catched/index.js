@@ -1,8 +1,7 @@
 import { JsonDB, Config } from "node-json-db";
 
-const db = new JsonDB(new Config("db", true, false, "/"));
-
 export default async function handler(req, res) {
+  const db = new JsonDB(new Config("db", true, false, "/"));
   if (req.method === "GET") {
     var data = await db.getData("/catchedPokemon");
 
@@ -12,8 +11,10 @@ export default async function handler(req, res) {
       id: req.body.id,
       name: req.body.name,
     };
+
     const index = await db.getIndex("/catchedPokemon", Number(newPokemon.id));
-    if (index !== -1) {
+
+    if (index === -1) {
       await db.push("/catchedPokemon[]", newPokemon);
       return res.status(200).json(newPokemon);
     } else {
