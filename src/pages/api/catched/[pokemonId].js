@@ -21,7 +21,6 @@ export default async function handler(req, res) {
           (await db.getIndex("/catchedPokemon", Number(pokemonId))) +
           "]"
       );
-
       return res.status(200).send("Pokemon liberado");
     } catch {
       return res.status(409).send("Pokemon no encontrado");
