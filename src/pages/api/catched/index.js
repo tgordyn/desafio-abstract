@@ -1,9 +1,7 @@
 import { JsonDB, Config } from "node-json-db";
 
-const dbLocation = process.env.DB_LOCATION; 
-
 export default async function handler(req, res) {
-  const db = new JsonDB(new Config(dbLocation, true, false, "/"));
+  const db = new JsonDB(new Config("db", true, false, "/"));
   if (req.method === "GET") {
     var data = await db.getData("/catchedPokemon");
 
