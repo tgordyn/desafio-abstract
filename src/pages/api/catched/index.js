@@ -1,10 +1,21 @@
 import { JsonDB, Config } from "node-json-db";
+import Cors from 'cors';
+import initMiddleware from '../../../lib/init.middleware';
+
+// Initialize the CORS middleware
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET', 'POST'],
+  })
+);
 
 export default async function handler(req, res) {
+  await cors(req, res);
+
   const db = new JsonDB(new Config("db", true, false, "/"));
+  
   if (req.method === "GET") {
     var data = await db.getData("/catchedPokemon");
-
     return res.status(200).json(data);
   } else if (req.method === "POST") {
     const newPokemon = {

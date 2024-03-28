@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.12",
     "axios": "^1.6.1",
+    "cors": "^2.8.5",
     "framer-motion": "^10.16.4",
     "next": "14.0.2",
     "node-json-db": "^2.3.0",
