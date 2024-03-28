@@ -12,7 +12,7 @@ import {
 import Header from "@/components/Header";
 import PokemonCard from "@/components/PokemonCard";
 import ModalPokemonDetails from "@/components/ModalPokemonDetails";
-//import { updateCatchedPokemons } from "@/utils/updateCatchedPokemons";
+import { BASE_API_URL } from "@/utils/constants";
 
 export default function CapturedPokemons() {
   const [catchedPokemons, setCatchedPokemons] = useState([]);
@@ -24,7 +24,7 @@ export default function CapturedPokemons() {
     setIsLoading(true);
     try {
       axios
-        .get("/api/catched")
+        .get(`${BASE_API_URL}/api/catched`)
         .then((response) => {
           const data = response.data;
           setCatchedPokemons(data);
@@ -41,7 +41,7 @@ export default function CapturedPokemons() {
     }
   }, []);
 
-  const handleViewPokemon = (pokemon)=> {
+  const handleViewPokemon = (pokemon) => {
     const { id } = pokemon;
     const pokemonApiUrl = `https://pokeapi.co/api/v2/pokemon/${id}/`;
 
@@ -55,11 +55,11 @@ export default function CapturedPokemons() {
       .catch((error) => {
         console.error("Error al obtener los detalles del Pokémon:", error);
       });
-  }
+  };
 
-  const handleDelete = (pokemon)=> {
+  const handleDelete = (pokemon) => {
     const { id } = pokemon;
-    const pokemonApiUrl = `/api/catched/${id}`;
+    const pokemonApiUrl = `${BASE_API_URL}/api/catched/${id}`;
 
     axios
       .delete(pokemonApiUrl)
@@ -74,11 +74,11 @@ export default function CapturedPokemons() {
           error
         );
       });
-  }
+  };
 
   const updateCatchedPokemons = async () => {
     try {
-      const response = await axios.get("/api/catched");
+      const response = await axios.get(`${BASE_API_URL}/api/catched`);
       const data = response.data;
       setCatchedPokemons(data);
     } catch (error) {
@@ -89,7 +89,6 @@ export default function CapturedPokemons() {
   useEffect(() => {
     updateCatchedPokemons();
   }, []);
-
 
   return (
     <>
@@ -109,52 +108,58 @@ export default function CapturedPokemons() {
             <Spinner size="xl" color="blue.800" />
           ) : (
             <Flex alignItems="center" justifyContent="center">
-              <Container
-                maxW="container.lg"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Stack
-                  p={{ base: 5, md: 10 }}
+              {catchedPokemons.length >= 1 ? (
+                <Container
+                  maxW="container.lg"
                   alignItems="center"
-                  spacing="5"
                   justifyContent="center"
-                  textAlign="center"
-                  w="full"
                 >
-                  {" "}
-                  <Flex
-                    flexWrap="wrap"
-                    justifyContent="center"
+                  <Stack
+                    p={{ base: 5, md: 10 }}
                     alignItems="center"
-                    spacing={{ base: 5, md: 10 }}
+                    spacing="5"
+                    justifyContent="center"
+                    textAlign="center"
                     w="full"
                   >
-                    {catchedPokemons.map((pokemon) => (
-                      <Box
-                        key={pokemon.id}
-                        flexBasis={{
-                          base: "100%",
-                          sm: "50%",
-                          md: "33.33%",
-                          lg: "25%",
-                          xl: "20%",
-                        }}
-                        flexGrow={0}
-                        flexShrink={0}
-                        mx={5}
-                        mt={8}
-                      >
-                        <PokemonCard
-                          pokemon={pokemon}
-                          onButtonClick={() => handleViewPokemon(pokemon)}
-                          onDeleteClick={() => handleDelete(pokemon)}
-                        />
-                      </Box>
-                    ))}
-                  </Flex>
-                </Stack>
-              </Container>
+                    {" "}
+                    <Flex
+                      flexWrap="wrap"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={{ base: 5, md: 10 }}
+                      w="full"
+                    >
+                      {catchedPokemons.map((pokemon) => (
+                        <Box
+                          key={pokemon.id}
+                          flexBasis={{
+                            base: "100%",
+                            sm: "50%",
+                            md: "33.33%",
+                            lg: "25%",
+                            xl: "20%",
+                          }}
+                          flexGrow={0}
+                          flexShrink={0}
+                          mx={5}
+                          mt={8}
+                        >
+                          <PokemonCard
+                            pokemon={pokemon}
+                            onButtonClick={() => handleViewPokemon(pokemon)}
+                            onDeleteClick={() => handleDelete(pokemon)}
+                          />
+                        </Box>
+                      ))}
+                    </Flex>
+                  </Stack>
+                </Container>
+              ) : (
+                <>
+                  <div> No atrapaste ninguno!</div>
+                </>
+              )}
             </Flex>
           )}
         </Container>
