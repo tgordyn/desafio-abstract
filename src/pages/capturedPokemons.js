@@ -12,19 +12,20 @@ import {
 import Header from "@/components/Header";
 import PokemonCard from "@/components/PokemonCard";
 import ModalPokemonDetails from "@/components/ModalPokemonDetails";
-import { BASE_API_URL } from "@/utils/constants";
+import { apiUrl } from "@/utils/constants";
 
 export default function CapturedPokemons() {
   const [catchedPokemons, setCatchedPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPokemon, setSelectedPokemon] = useState();
   const pokemonDataModal = useDisclosure();
+  //const localh = 'http://localhost:4000/api/catched'
 
   useEffect(() => {
     setIsLoading(true);
     try {
       axios
-        .get(`${BASE_API_URL}/api/catched`)
+        .get(apiUrl)
         .then((response) => {
           const data = response.data;
           setCatchedPokemons(data);
@@ -59,7 +60,8 @@ export default function CapturedPokemons() {
 
   const handleDelete = (pokemon) => {
     const { id } = pokemon;
-    const pokemonApiUrl = `${BASE_API_URL}/api/catched/${id}`;
+    //const pokemonApiUrl = `${BASE_API_URL}/api/catched/${id}`;
+    const pokemonApiUrl = `${apiUrl}/${id}`;
 
     axios
       .delete(pokemonApiUrl)
@@ -78,7 +80,8 @@ export default function CapturedPokemons() {
 
   const updateCatchedPokemons = async () => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/api/catched`);
+      //const response = await axios.get(`${BASE_API_URL}/api/catched`);
+      const response = await axios.get(apiUrl);
       const data = response.data;
       setCatchedPokemons(data);
     } catch (error) {

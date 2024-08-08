@@ -15,6 +15,7 @@ import {
 import Header from "@/components/Header";
 import PokemonCard from "@/components/PokemonCard";
 import ModalPokemonDetails from "@/components/ModalPokemonDetails";
+import { apiUrl } from "@/utils/constants";
 
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(
     "https://pokeapi.co/api/v2/pokemon/?limit=20&offset=0"
   );
+  //const localh = 'http://localhost:4000/api/catched'
 
   useEffect(() => {
     setIsLoading(true);
@@ -40,20 +42,15 @@ export default function Home() {
   }, [currentPage]);
 
   useEffect(() => {
-    try {
-      axios
-        .get("/api/catched")
-        .then((response) => {
-          const data = response.data;
-
-          setCatchedPokemons(data);
-        })
-        .catch((error) => {
-          console.error("Error al obtener los pokemones capturados", error);
-        });
-    } catch (error) {
-      console.error("Error al obtener los pokemones capturados", error);
-    }
+    axios.get(apiUrl)
+      .then(response => {
+        const data = response.data;
+        console.log('data', data);
+        setCatchedPokemons(data);
+      })
+      .catch(error => {
+        console.error("Error al obtener los pokemones capturados!", error);
+      });
   }, []);
 
   const handleNextPage = () => {
@@ -82,7 +79,7 @@ export default function Home() {
 
   const updateCatchedPokemons = async () => {
     try {
-      const response = await axios.get("/api/catched");
+      const response = await axios.get(apiUrl);
       const data = response.data;
       setCatchedPokemons(data);
     } catch (error) {

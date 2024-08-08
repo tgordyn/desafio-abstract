@@ -12,6 +12,7 @@ import {
   Flex,
   Spinner,
 } from "@chakra-ui/react";
+import { apiUrl } from "@/utils/constants";
 
 
 export default function PokemonData({
@@ -21,6 +22,8 @@ export default function PokemonData({
 }) {
   const [catched, setCatched] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  //const localh = 'http://localhost:4000/api/catched'
+
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -35,12 +38,14 @@ export default function PokemonData({
       setCatched(!catched);
 
       if (!catched) {
-        await axios.post(`/api/catched`, {
+        //await axios.post(`/api/catched`, {
+        await axios.post(apiUrl, {
           id: pokemon.id,
           name: pokemon.name,
         });
       } else {
-        await axios.delete(`/api/catched/${pokemon.id}`);
+        //await axios.delete(`/api/catched/${pokemon.id}`);
+        await axios.delete(`${apiUrl}/${pokemon.id}`);
       }
 
       onCatchedChange();
