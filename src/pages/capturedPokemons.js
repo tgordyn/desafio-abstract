@@ -60,8 +60,12 @@ export default function CapturedPokemons() {
 
   const handleDelete = (pokemon) => {
     const { id } = pokemon;
+<<<<<<< HEAD
     //const pokemonApiUrl = `${BASE_API_URL}/api/catched/${id}`;
     const pokemonApiUrl = `${apiUrl}/${id}`;
+=======
+    const pokemonApiUrl = `/api/catched/${id}`;
+>>>>>>> fb18848f3ba766f980378f2847582939332f4f8a
 
     axios
       .delete(pokemonApiUrl)
